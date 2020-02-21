@@ -8,12 +8,14 @@ const createShortcodeBlock = shortcodeConfig => {
 
   const nodes = [Text.create('')];
 
-  // Get default values for plugin fields.
-  const defaultValues = shortcodeConfig.fields
-    .toMap()
-    .mapKeys((_, field) => field.get('name'))
-    .filter(field => field.has('default'))
-    .map(field => field.get('default'));
+  // Get default values for plugin.
+  const defaultValues =
+    shortcodeConfig.defaultValues ||
+    shortcodeConfig.fields
+      .toMap()
+      .mapKeys((_, field) => field.get('name'))
+      .filter(field => field.has('default'))
+      .map(field => field.get('default'));
 
   // Create new shortcode block with default values set.
   return Block.create({

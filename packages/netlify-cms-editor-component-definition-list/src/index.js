@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import marked from 'marked';
 
 const markdownField = {
@@ -13,6 +13,7 @@ const definitionList = {
   label: 'Definition List',
   label_singular: 'Definition',
   widget: 'list',
+  defaultValues: [],
   fields: [
     { ...markdownField, name: 'term', label: 'Term' },
     { ...markdownField, name: 'definition', label: 'Definition' },
@@ -28,16 +29,16 @@ const definitionList = {
     return list;
   },
   toBlock: (list = []) => {
-    return list.map(({ term, definition }) => `${term}\n: ${definition}`).join('\n\n');
+    return list.map(({ term, definition }) => `${term || ''}\n: ${definition || ''}`).join('\n\n');
   },
   // eslint-disable-next-line react/display-name
   toPreview: (list = []) => (
     <dl>
       {list.map(({ term, definition }) => (
-        <>
+        <Fragment key={`${term}_${definition}`}>
           <dt dangerouslySetInnerHTML={{ __html: marked(term) }} />
           <dd dangerouslySetInnerHTML={{ __html: marked(definition) }} />
-        </>
+        </Fragment>
       ))}
     </dl>
   ),
